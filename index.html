@@ -11,13 +11,20 @@
         <h1>周邊收藏展示區</h1>
         <p>歡迎瀏覽我的吉伊卡哇、排球少年、坂本日常等收藏！</p>
         
-        <div id="filter-controls">
-            <select id="series-filter">
-                <option value="all">所有系列 (篩選)</option>
-            </select>
+        <nav id="main-nav">
+            <ul id="nav-list">
+                <li class="nav-item">
+                    <a href="#" data-series-id="all" class="nav-link">所有商品</a>
+                </li>
+                </ul>
+        </nav>
+        
+        <div id="search-container">
             <input type="text" id="search-input" placeholder="搜尋商品名稱...">
+            <button id="search-button">🔍</button>
         </div>
-    </header>
+        
+        </header>
 
     <main id="collection-list">
         <p>商品載入中，如果等待太久請檢查 data.json 是否正確。</p>
