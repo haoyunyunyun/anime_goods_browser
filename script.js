@@ -84,45 +84,21 @@ function applyFilters() {
 }
 
 
-// 4. 動態生成篩選器選項 (大幅修改：生成頂部導航欄連結)
+// 4. 設定篩選器的點擊事件 (簡化：只綁定事件，不生成 HTML 元素)
 function setupFilters(items) {
-    const navList = document.getElementById('nav-list');
-    const seriesSet = new Set(items.map(item => item.series));
-    
-    // 1. 處理「所有商品」的連結點擊事件
-    const allLink = navList.querySelector('a[data-series-id="all"]');
-    if (allLink) {
-        allLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            applyNavigationFilter('all');
-        });
-    }
-
-    // 2. 根據 data.json 生成其他系列連結
-    seriesSet.forEach(series => {
-        // 忽略空的系列名稱
-        if (!series) return; 
+    // 1. 取得所有的導航連結 (包括您在 index.html 中手動寫入的)
+    document.querySelectorAll('#nav-list .nav-item a').forEach(link => {
+        const seriesId = link.getAttribute('data-series-id');
         
-        const listItem = document.createElement('li');
-        listItem.classList.add('nav-item');
-        
-        const link = document.createElement('a');
-        link.href = "#";
-        link.textContent = series;
-        link.classList.add('nav-link');
-        link.setAttribute('data-series-id', series);
-        
-        // 監聽主分類點擊事件
+        // 確保每個連結只綁定一次點擊事件
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            applyNavigationFilter(series);
+            // 執行篩選功能
+            applyNavigationFilter(seriesId); 
         });
-
-        listItem.appendChild(link);
-        navList.appendChild(listItem);
     });
 
-    // 3. 監聽搜尋框事件
+    // 2. 監聽搜尋框事件 (保持不變)
     const searchInput = document.getElementById('search-input');
     const searchButton = document.getElementById('search-button');
 
@@ -135,10 +111,13 @@ function setupFilters(items) {
             applyFilters();
         }
     });
+    
+    // 移除：原程式碼中第 79-93 行「根據 data.json 生成其他系列連結」的迴圈
+    // 因為現在所有導航項目都寫在 index.html 中了。
 }
 
 
-// 程式啟動點：載入資料，設置篩選器，並顯示所有商品 (修改了最後的顯示邏輯)
+// 程式啟動點 (保持不變)
 loadData().then(data => {
     if (data.length > 0) {
         allItems = data;
