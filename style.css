@@ -110,14 +110,16 @@ h1 {
 }
 
 /* ---------------------------------------------------- */
-/* 搜尋框樣式 (移到 Header 底部) */
+/* 搜尋框樣式 (調整為置中) */
 /* ---------------------------------------------------- */
 #search-container {
     padding: 15px 20px 10px 20px;
     max-width: 500px;
-    margin: 0 auto;
+    /* 關鍵：使用 margin: 0 auto; 讓區塊置中 */
+    margin: 0 auto; 
     display: flex;
 }
+/* 其他搜尋框子元素樣式保持不變 */
 
 #search-input {
     flex-grow: 1;
