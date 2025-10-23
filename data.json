@@ -1,0 +1,65 @@
+[
+  {
+    "id": "c101",
+    "name": "觀光小八Ｓ",
+    "series": "吉伊卡哇",
+    "image_url": "images/c101_hawaii.jpg",
+    "stock": 3,
+    "price": 450,
+    "sell_url": "https://myship.7-11.com.tw/general/detail/GM2510056126173"
+  },
+  {
+    "id": "c102",
+    "name": "觀光小可愛Ｓ",
+    "series": "吉伊卡哇",
+    "image_url": "images/c101_hawaii.jpg",
+    "stock": 3,
+    "price": 450,
+    "sell_url": "https://myship.7-11.com.tw/general/detail/GM2510056126173"
+  },
+  {
+    "id": "c103",
+    "name": "寶寶兔兔",
+    "series": "吉伊卡哇",
+    "image_url": "images/c103_baby.jpg",
+    "stock": 2,
+    "price": 450,
+    "sell_url": "https://myship.7-11.com.tw/general/detail/GM2510056126173"
+  },
+  {
+    "id": "c104",
+    "name": "寶寶小八",
+    "series": "吉伊卡哇",
+    "image_url": "images/c103_baby.jpg",
+    "stock": 2,
+    "price": 450,
+    "sell_url": "https://myship.7-11.com.tw/general/detail/GM2510056126173"
+  },
+  {
+    "id": "c105",
+    "name": "寶寶小可愛",
+    "series": "吉伊卡哇",
+    "image_url": "images/c103_baby.jpg",
+    "stock": 1,
+    "price": 450,
+    "sell_url": "https://myship.7-11.com.tw/general/detail/GM2510056126173"
+  },
+  {
+    "id": "h101",
+    "name": "原畫徽章",
+    "series": "排球少年",
+    "image_url": "images/h101_10th.jpg",
+    "stock": 5,
+    "price": 250,
+    "sell_url": "https://myship.7-11.com.tw/general/detail/GM2510056126173"
+  },
+  {
+    "id": "s101",
+    "name": "原畫吊飾",
+    "series": "坂本日常",
+    "image_url": "images/s101_trains.jpg",
+    "stock": 1,
+    "price": 280,
+    "sell_url": "https://myship.7-11.com.tw/general/detail/GM2510056126173"
+  }
+]
