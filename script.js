@@ -1,16 +1,14 @@
 // 全域變數，存放從 data.json 讀取到的所有商品資料
-let allItems = []; 
+let allItems = [];
 
-// 1. 讀取 JSON 資料（使用非同步 async/await）
+// 1. 讀取 JSON 資料 (loadData 函數保持不變)
 async function loadData() {
     try {
-        // 嘗試從根目錄讀取 data.json
-        const response = await fetch('data.json'); 
+        const response = await fetch('data.json');
         if (!response.ok) {
-            // 如果讀取失敗 (例如檔案不存在或伺服器錯誤)
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return await response.json(); // 將 JSON 文字轉換為 JavaScript 物件
+        return await response.json();
     } catch (error) {
         console.error("無法讀取 data.json:", error);
         document.getElementById('collection-list').innerHTML = "<p>資料載入失敗，請檢查 data.json 檔案的命名和內容。</p>";
@@ -18,10 +16,10 @@ async function loadData() {
     }
 }
 
-// 2. 根據資料陣列生成並顯示商品卡片
+// 2. 根據資料陣列生成並顯示商品卡片 (renderItems 函數保持不變)
 function renderItems(itemsToDisplay) {
     const listContainer = document.getElementById('collection-list');
-    listContainer.innerHTML = ''; // 清空現有內容，準備顯示新的結果
+    listContainer.innerHTML = '';
 
     if (itemsToDisplay.length === 0) {
         listContainer.innerHTML = "<p>抱歉，沒有找到符合條件的商品。</p>";
@@ -29,15 +27,12 @@ function renderItems(itemsToDisplay) {
     }
 
     itemsToDisplay.forEach(item => {
-        // 僅顯示庫存大於 0 的商品
         if (item.stock < 1) return;
 
-        // 建立商品卡片 (使用模板字串)
         const card = document.createElement('div');
         card.classList.add('item-card');
-        card.setAttribute('data-series', item.series); // 加入系列名稱，方便日後擴充篩選
+        card.setAttribute('data-series', item.series);
 
-        // 使用 data.json 裡的欄位來填充 HTML 內容
         card.innerHTML = `
             <img src="${item.image_url}" alt="${item.name}">
             <h3>${item.name}</h3>
@@ -45,55 +40,111 @@ function renderItems(itemsToDisplay) {
             <p class="price">價格：$${item.price}</p>
             <a href="${item.sell_url}" target="_blank" class="buy-button">前往賣場購買 (${item.stock} 個)</a>
         `;
-        listContainer.appendChild(card); // 將卡片加入到網頁清單中
+        listContainer.appendChild(card);
     });
 }
 
-// 3. 實現篩選和搜尋的核心邏輯
-function applyFilters() {
-    // 取得使用者選擇的系列和輸入的搜尋關鍵字
-    const selectedSeries = document.getElementById('series-filter').value;
+
+// 新增：處理導航點擊的篩選功能 (包含高亮邏輯)
+function applyNavigationFilter(selectedSeries) {
+    // 1. 設定導航連結的高亮狀態 (Active Class)
+    document.querySelectorAll('#nav-list a').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('data-series-id') === selectedSeries) {
+            link.classList.add('active');
+        }
+    });
+
+    // 2. 執行過濾邏輯
     const searchText = document.getElementById('search-input').value.toLowerCase();
 
-    // 過濾 allItems 陣列
     const filteredItems = allItems.filter(item => {
-        // 篩選系列邏輯：'all' 表示顯示全部，否則必須與商品系列匹配
+        // 篩選系列
         const seriesMatch = (selectedSeries === 'all' || item.series === selectedSeries);
 
-        // 搜尋名稱邏輯：將名稱轉小寫後，檢查是否包含搜尋文字
+        // 搜尋名稱
         const searchMatch = item.name.toLowerCase().includes(searchText);
 
-        // 必須同時符合系列篩選和名稱搜尋
         return seriesMatch && searchMatch;
     });
 
-    renderItems(filteredItems); // 重新渲染網頁，顯示過濾後的結果
+    renderItems(filteredItems);
 }
 
-// 4. 動態生成篩選器選項
-function setupFilters(items) {
-    const filterSelect = document.getElementById('series-filter');
-    // 使用 Set 取得所有不重複的系列名稱
-    const seriesSet = new Set(items.map(item => item.series));
 
+// 3. 實現搜尋的核心邏輯 (修改：基於當前選中的導航項進行搜尋)
+function applyFilters() {
+    // 獲取當前被選中的系列ID
+    const activeLink = document.querySelector('#nav-list a.active');
+    // 如果找不到 active 連結，預設為 'all'
+    const selectedSeries = activeLink ? activeLink.getAttribute('data-series-id') : 'all';
+
+    // 以當前選中系列為基礎，重新執行過濾
+    applyNavigationFilter(selectedSeries);
+}
+
+
+// 4. 動態生成篩選器選項 (大幅修改：生成頂部導航欄連結)
+function setupFilters(items) {
+    const navList = document.getElementById('nav-list');
+    const seriesSet = new Set(items.map(item => item.series));
+    
+    // 1. 處理「所有商品」的連結點擊事件
+    const allLink = navList.querySelector('a[data-series-id="all"]');
+    if (allLink) {
+        allLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            applyNavigationFilter('all');
+        });
+    }
+
+    // 2. 根據 data.json 生成其他系列連結
     seriesSet.forEach(series => {
-        const option = document.createElement('option');
-        option.value = series;
-        option.textContent = series;
-        filterSelect.appendChild(option);
+        // 忽略空的系列名稱
+        if (!series) return; 
+        
+        const listItem = document.createElement('li');
+        listItem.classList.add('nav-item');
+        
+        const link = document.createElement('a');
+        link.href = "#";
+        link.textContent = series;
+        link.classList.add('nav-link');
+        link.setAttribute('data-series-id', series);
+        
+        // 監聽主分類點擊事件
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            applyNavigationFilter(series);
+        });
+
+        listItem.appendChild(link);
+        navList.appendChild(listItem);
     });
 
-    // 監聽事件：當篩選器或搜尋框的內容改變時，執行 applyFilters 函數
-    filterSelect.addEventListener('change', applyFilters);
-    document.getElementById('search-input').addEventListener('input', applyFilters);
+    // 3. 監聽搜尋框事件
+    const searchInput = document.getElementById('search-input');
+    const searchButton = document.getElementById('search-button');
+
+    // 監聽按鈕點擊
+    searchButton.addEventListener('click', applyFilters); 
+    
+    // 監聽 Enter 鍵
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            applyFilters();
+        }
+    });
 }
 
 
-// 程式啟動點：載入資料，設置篩選器，並顯示所有商品
+// 程式啟動點：載入資料，設置篩選器，並顯示所有商品 (修改了最後的顯示邏輯)
 loadData().then(data => {
     if (data.length > 0) {
         allItems = data;
         setupFilters(allItems);
-        renderItems(allItems); // 第一次載入時顯示全部商品
+        
+        // 程式啟動時，預設顯示全部商品，並高亮 '所有商品' 連結
+        applyNavigationFilter('all'); 
     }
 });
