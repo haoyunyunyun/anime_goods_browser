@@ -1,0 +1,137 @@
+/* 顏色變數定義 (基於您提供的色票) */
+:root {
+    --color-primary-yellow: #FBDC30; /* Header 背景、強調色 */
+    --color-olive-green: #A7A651;   /* 導購按鈕 */
+    --color-tan-beige: #E0BA7A;     /* 柔和點綴、陰影 */
+    --color-deep-blue: #5A5F80;     /* 主要文字、價格、重點文字 */
+    --color-cool-grey: #9BA7B0;     /* 篩選器、Footer */
+    --color-background: #FFFFFF;    /* 網頁底色 (您選擇的白色) */
+    --color-text-dark: #333333;     /* 一般文字 */
+    --border-radius-card: 8px;      /* 圓角大小 */
+}
+
+/* ---------------------------------------------------- */
+/* 基本與通用樣式 */
+/* ---------------------------------------------------- */
+body {
+    /* 使用標準黑體 */
+    font-family: 'Arial', 'Helvetica', 'Microsoft JhengHei', 'sans-serif';
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-background); 
+    color: var(--color-text-dark);
+}
+
+header {
+    background-color: var(--color-primary-yellow); /* 主黃色背景 */
+    color: var(--color-deep-blue); /* 深色標題文字 */
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px -6px rgba(0, 0, 0, 0.2); /* 讓 Header 有一點點立體感 */
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 5px;
+}
+
+/* 篩選與搜尋控制項 */
+#filter-controls {
+    margin-top: 20px;
+}
+
+#series-filter, #search-input {
+    padding: 10px 15px;
+    margin: 8px;
+    border: 1px solid var(--color-cool-grey); /* 灰藍邊框 */
+    border-radius: var(--border-radius-card); /* 圓角 */
+    background-color: #fff;
+}
+
+/* ---------------------------------------------------- */
+/* 商品卡片排版與樣式 */
+/* ---------------------------------------------------- */
+#collection-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    gap: 30px; /* 卡片間距 */
+    padding: 40px 20px;
+}
+
+.item-card {
+    background-color: var(--color-background);
+    border: 1px solid #eee;
+    border-radius: var(--border-radius-card); /* 圓角 */
+    padding: 15px;
+    width: 260px; /* 卡片固定寬度，略微調整讓排版更好看 */
+    
+    /* 明顯的卡片陰影 (使用淺棕色，讓效果柔和) */
+    box-shadow: 0 8px 15px rgba(224, 186, 122, 0.4); 
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.item-card:hover {
+    transform: translateY(-5px); /* 滑鼠懸停時輕微上浮 */
+    box-shadow: 0 12px 20px rgba(224, 186, 122, 0.6);
+}
+
+.item-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain; 
+    border-radius: 4px;
+    border: 1px solid #f0f0f0; /* 圖片周圍有淺色邊框 */
+    margin-bottom: 10px;
+}
+
+.item-card h3 {
+    font-size: 1.1em;
+    margin: 10px 0 5px 0;
+    color: var(--color-deep-blue); 
+}
+
+.series {
+    font-size: 0.9em;
+    color: var(--color-cool-grey);
+    margin-bottom: 8px;
+}
+
+.price {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: var(--color-deep-blue); /* 價格使用深藍色 */
+    margin: 10px 0;
+}
+
+/* ---------------------------------------------------- */
+/* 導購按鈕樣式 */
+/* ---------------------------------------------------- */
+.buy-button {
+    display: block;
+    background-color: var(--color-olive-green); /* 使用橄欖綠作為按鈕主色 */
+    color: white;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: var(--border-radius-card); /* 圓角 */
+    margin-top: 15px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.buy-button:hover {
+    background-color: #929141; /* 橄欖綠變深 */
+}
+
+/* ---------------------------------------------------- */
+/* Footer */
+/* ---------------------------------------------------- */
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: var(--color-cool-grey); /* 冷灰藍背景 */
+    color: white;
+    font-size: 0.8em;
+    margin-top: 30px;
+}
